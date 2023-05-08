@@ -3,30 +3,23 @@ from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
 from qiskit import execute
 import random
 
-# 문제 단어 리스트
 word_list = ['apple', 'banana', 'cherry', 'durian', 'elderberry', 'fig']
 
-# 문제 단어 랜덤 선택
 word = random.choice(word_list)
 
-# 양자 회로 생성
 qr = QuantumRegister(len(word))
 cr = ClassicalRegister(len(word))
 qc = QuantumCircuit(qr, cr)
 
-# Hadamard 게이트 적용
 for i in range(len(word)):
     qc.h(qr[i])
 
-# 예측 결과에 따라 X 게이트 적용
 for i in range(len(word)):
     if i % 2 == 0:
         qc.x(qr[i])
 
-# 측정 게이트 추가
 qc.measure(qr, cr)
 
-# 양자 회로 실행
 backend = qiskit.BasicAer.get_backend('qasm_simulator')
 job = execute(qc, backend, shots=1)
 result = job.result()
